@@ -1,0 +1,44 @@
+{
+  "name": "campusshare",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CampusShare — Campus Resource & Peer-to-Peer Marketplace for university students",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma db push --force-reset && tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "bcryptjs": "^3.0.3",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.63.0",
+    "next": "^16.4.3",
+    "next-auth": "^4.24.15",
+    "prisma": "^5.22.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.7.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "autoprefixer": "^10.6.2",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.3",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.0",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,269 @@
+"use client";
+
+import React, { useState, useEffect, useCallback, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Search, Filter, X, SlidersHorizontal, Sparkles, Flame, BookOpen, Laptop, Home } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ItemCard } from "@/components/items/item-card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Pagination } from "@/components/ui/pagination";
+import { useDebounce } from "@/hooks/use-debounce";
+import { CATEGORIES, CONDITIONS } from "@/lib/constants";
+import type { ItemWithSeller } from "@/types";
+
+function BrowseContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [items, setItems] = useState<ItemWithSeller[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [category, setCategory] = useState(searchParams.get("category") || "");
+  const [condition, setCondition] = useState(searchParams.get("condition") || "");
+  const [priceMin, setPriceMin] = useState(searchParams.get("priceMin") || "");
+  const [priceMax, setPriceMax] = useState(searchParams.get("priceMax") || "");
+  const [courseCode, setCourseCode] = useState(searchParams.get("courseCode") || "");
+  const [page, setPage] = useState(parseInt(searchParams.get("page") || "1", 10));
+
+  const debouncedSearch = useDebounce(search, 400);
+
+  const fetchItems = useCallback(async () => {
+    setLoading(true);
+    const params = new URLSearchParams();
+    if (debouncedSearch) params.set("search", debouncedSearch);
+    if (category) params.set("category", category);
+    if (condition) params.set("condition", condition);
+    if (priceMin) params.set("priceMin", priceMin);
+    if (priceMax) params.set("priceMax", priceMax);
+    if (courseCode) params.set("courseCode", courseCode);
+    params.set("page", String(page));
+    params.set("limit", "12");
+
+    try {
+      const res = await fetch(`/api/items?${params.toString()}`);
+      const json = await res.json();
+      if (json.success) {
+        setItems(json.data);
+        setTotal(json.pagination.total);
+        setTotalPages(json.pagination.totalPages);
+      }
+    } catch (err) {
+      console.error("Error fetching items:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [debouncedSearch, category, condition, priceMin, priceMax, courseCode, page]);
+
+  useEffect(() => { fetchItems(); }, [fetchItems]);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (debouncedSearch) params.set("search", debouncedSearch);
+    if (category) params.set("category", category);
+    if (condition) params.set("condition", condition);
+    if (priceMin) params.set("priceMin", priceMin);
+    if (priceMax) params.set("priceMax", priceMax);
+    if (courseCode) params.set("courseCode", courseCode);
+    if (page > 1) params.set("page", String(page));
+    const queryStr = params.toString();
+    router.replace(`/browse${queryStr ? `?${queryStr}` : ""}`, { scroll: false });
+  }, [debouncedSearch, category, condition, priceMin, priceMax, courseCode, page, router]);
+
+  const clearFilters = () => {
+    setSearch(""); setCategory(""); setCondition("");
+    setPriceMin(""); setPriceMax(""); setCourseCode(""); setPage(1);
+  };
+
+  const hasFilters = category || condition || priceMin || priceMax || courseCode;
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      {/* Hero Section - Organic & Student Focused */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 px-8 py-12 mb-10 text-white">
+        <div className="relative z-10 max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-medium mb-4">
+            <Sparkles className="h-3 w-3" />
+            <span>Student-to-Student Marketplace</span>
+          </div>
+          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl mb-4">
+            Find what you need, <br />
+            <span className="text-blue-200">sell what you don't.</span>
+          </h1>
+          <p className="text-blue-100 text-lg mb-8 opacity-90">
+            The easiest way to trade textbooks, tech, and dorm gear with your peers.
+          </p>
+
+          {/* Integrated Search - a bit more "natural" than a separate bar */}
+          <div className="flex gap-2 p-2 bg-white rounded-2xl shadow-xl max-w-lg">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                placeholder="Search for books, gadgets, drawing boards..."
+                className="w-full rounded-xl py-3 pl-10 pr-4 text-sm outline-none text-gray-900"
+              />
+            </div>
+            <Button
+              onClick={() => setFiltersOpen(!filtersOpen)}
+              className="rounded-xl px-4 bg-blue-600 hover:bg-blue-700"
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+        {/* Abstract background shapes to remove "AI-template" feel */}
+        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-blue-500 opacity-20 blur-3xl" />
+        <div className="absolute right-10 bottom-0 h-40 w-40 rounded-full bg-indigo-400 opacity-30 blur-2xl" />
+      </div>
+
+      {/* Quick Category Bubbles - Very modern "App" feel */}
+      <div className="mb-10 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center gap-4 pb-2">
+          <button
+            onClick={() => { setCategory(""); setPage(1); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              category === "" ? "bg-blue-600 text-white shadow-md" : "bg-white border border-gray-200 text-gray-600 hover:border-blue-300"
+            }`}
+          >
+            All Items
+          </button>
+          {CATEGORIES.map((c) => (
+            <button
+              key={c.value}
+              onClick={() => { setCategory(c.value); setPage(1); }}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                category === c.value ? "bg-blue-600 text-white shadow-md" : "bg-white border border-gray-200 text-gray-600 hover:border-blue-300"
+              }`}
+            >
+              <span>{c.icon}</span>
+              {c.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex gap-8">
+        {/* Sidebar Filters - Clean & Minimal */}
+        <aside className={`${filtersOpen ? "block" : "hidden"} lg:block w-full lg:w-64 shrink-0`}>
+          <div className="rounded-2xl border border-gray-200 bg-white p-5 space-y-6 sticky top-24">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                <Filter className="h-4 w-4 text-blue-600" /> Refine
+              </h3>
+              {hasFilters && (
+                <button onClick={clearFilters} className="text-xs text-blue-600 font-medium hover:underline">Clear All</button>
+              )}
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block mb-2">Condition</label>
+                <div className="space-y-1">
+                  {CONDITIONS.map((c) => (
+                    <label key={c.value} className="flex items-center gap-2 cursor-pointer rounded-lg px-2 py-1.5 hover:bg-gray-50 group">
+                      <input
+                        type="radio"
+                        name="condition"
+                        checked={condition === c.value}
+                        onChange={() => { setCondition(condition === c.value ? "" : c.value); setPage(1); }}
+                        className="h-3.5 w-3.5 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-gray-600 group-hover:text-gray-900">{c.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block mb-2">Price Range</label>
+                <div className="flex gap-2">
+                  <input
+                    type="number" min={0} placeholder="Min"
+                    value={priceMin} onChange={(e) => { setPriceMin(e.target.value); setPage(1); }}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-blue-500"
+                  />
+                  <input
+                    type="number" min={0} placeholder="Max"
+                    value={priceMax} onChange={(e) => { setPriceMax(e.target.value); setPage(1); }}
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block mb-2">Course Code</label>
+                <input
+                  type="text" placeholder="e.g. CS101"
+                  value={courseCode} onChange={(e) => { setCourseCode(e.target.value); setPage(1); }}
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Results Area */}
+        <div className="flex-1">
+          {loading ? (
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="rounded-2xl border border-gray-100 bg-white overflow-hidden">
+                  <Skeleton className="aspect-[4/3] w-full" />
+                  <div className="p-4 space-y-3">
+                    <Skeleton className="h-5 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                    <Skeleton className="h-4 w-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : items.length === 0 ? (
+            <EmptyState
+              title="No matches found"
+              description="We couldn't find any items matching your criteria. Try broadening your search."
+              actionLabel="Reset Filters"
+              onAction={clearFilters}
+            />
+          ) : (
+            <>
+              <div className="mb-6 flex items-center justify-between">
+                <p className="text-sm text-gray-500">
+                  Showing <span className="font-semibold text-gray-900">{items.length}</span> of <span className="font-semibold text-gray-900">{total}</span> products
+                </p>
+              </div>
+              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {items.map((item) => (
+                  <ItemCard key={item.id} item={item} />
+                ))}
+              </div>
+              {totalPages > 1 && (
+                <div className="mt-12 flex justify-center">
+                  <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                  />
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function BrowsePage() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-8"><Skeleton className="h-10 w-64" /></div>}>
+      <BrowseContent />
+    </Suspense>
+  );
+}
