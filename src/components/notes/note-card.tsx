@@ -25,9 +25,8 @@ export function NoteCard({ note, onVote }: NoteCardProps) {
             {truncateText(note.description, 120)}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
-            <Badge variant="blue" className="text-xs">{note.courseCode}</Badge>
             {note.department && (
-              <Badge variant="gray" className="text-xs">{note.department}</Badge>
+              <Badge variant="blue" className="text-xs">{note.department}</Badge>
             )}
           </div>
         </div>

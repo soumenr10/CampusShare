@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
   Calendar, Building, BookOpen, GraduationCap, MapPin,
@@ -22,6 +22,7 @@ type Tab = "listings" | "notes" | "reviews";
 
 export default function ProfilePage() {
   const params = useParams();
+  const router = useRouter();
   const { data: session } = useSession();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);

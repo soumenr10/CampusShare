@@ -173,7 +173,6 @@ export default function ItemDetailPage() {
             <Badge variant={conditionColors[item.condition] as "green" | "blue" | "yellow" | "gray"}>
               {conditionLabels[item.condition]}
             </Badge>
-            {item.courseCode && <Badge variant="gray"><Tag className="h-3 w-3 mr-1" />{item.courseCode}</Badge>}
           </div>
 
           <div className="rounded-xl bg-gray-50 p-4">

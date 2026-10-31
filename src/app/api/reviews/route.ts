@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     const parsed = reviewSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { success: false, error: parsed.error.errors.map((e) => e.message).join(", ") } satisfies ApiResponse,
+        { success: false, error: parsed.error.issues.map((i) => i.message).join(", ") } satisfies ApiResponse,
         { status: 400 }
       );
     }
