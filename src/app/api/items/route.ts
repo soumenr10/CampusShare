@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: parsed.error?.errors?.map((e) => e.message).join(", ") || "Validation failed",
+          error: parsed.error.issues.map((issue) => issue.message).join(", ") || "Validation failed",
         } satisfies ApiResponse,
         { status: 400 }
       );

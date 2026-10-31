@@ -43,8 +43,8 @@ export async function proxy(req: NextRequest) {
         { status: 401 }
       );
     }
+    return NextResponse.next();
   }
-
 
   // Admin routes require ADMIN role
   if (adminPaths.some((p) => pathname.startsWith(p))) {

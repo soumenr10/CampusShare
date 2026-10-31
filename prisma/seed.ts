@@ -105,7 +105,6 @@ async function main() {
         category: "TEXTBOOKS",
         price: 45,
         condition: "LIKE_NEW",
-        courseCode: "MATH101",
         images: ["https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400"],
         campusZone: "Library Foyer",
         sellerId: alice.id,
@@ -118,7 +117,6 @@ async function main() {
         category: "TEXTBOOKS",
         price: 55,
         condition: "GOOD",
-        courseCode: "CS201",
         images: ["https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400"],
         campusZone: "Student Union",
         sellerId: bob.id,
@@ -191,7 +189,6 @@ async function main() {
         category: "TEXTBOOKS",
         price: 20,
         condition: "GOOD",
-        courseCode: "CHEM202",
         images: ["https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=400"],
         campusZone: "Engineering Block Entrance",
         sellerId: carol.id,
@@ -227,7 +224,6 @@ async function main() {
         category: "TEXTBOOKS",
         price: 30,
         condition: "FAIR",
-        courseCode: "PHYS101",
         images: ["https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400"],
         campusZone: "Sports Complex Gate",
         sellerId: dave.id,
@@ -255,7 +251,6 @@ async function main() {
       data: {
         title: "Data Structures & Algorithms - Complete Notes",
         description: "Comprehensive notes covering arrays, linked lists, trees, graphs, sorting algorithms, dynamic programming, and Big-O analysis. Includes practice problems.",
-        courseCode: "CS201",
         department: "Computer Science",
         fileUrl: "https://example.com/notes/cs201-dsa-notes.pdf",
         uploaderId: alice.id,
@@ -267,7 +262,6 @@ async function main() {
       data: {
         title: "Organic Chemistry II - Reaction Mechanisms",
         description: "Detailed notes on all major reaction mechanisms including SN1, SN2, E1, E2, addition reactions, and aromatic chemistry. Color-coded diagrams.",
-        courseCode: "CHEM202",
         department: "Chemistry",
         fileUrl: "https://example.com/notes/chem202-mechanisms.pdf",
         uploaderId: carol.id,
@@ -279,7 +273,6 @@ async function main() {
       data: {
         title: "Microeconomics Midterm Review",
         description: "Condensed review notes for midterm exam. Covers supply & demand, elasticity, consumer theory, production costs, and market structures.",
-        courseCode: "ECON101",
         department: "Economics",
         fileUrl: "https://example.com/notes/econ101-midterm-review.pdf",
         uploaderId: dave.id,
@@ -291,7 +284,6 @@ async function main() {
       data: {
         title: "Linear Algebra - Eigenvalues & Eigenvectors",
         description: "Step-by-step worked examples for finding eigenvalues, eigenvectors, diagonalization, and applications. Includes practice problems with solutions.",
-        courseCode: "MATH202",
         department: "Mathematics",
         fileUrl: "https://example.com/notes/math202-eigen.pdf",
         uploaderId: bob.id,
@@ -303,7 +295,6 @@ async function main() {
       data: {
         title: "General Biology - Cell Biology & Genetics",
         description: "Lecture notes covering cell structure, mitosis/meiosis, DNA replication, transcription, translation, and Mendelian genetics.",
-        courseCode: "BIO101",
         department: "Biology",
         fileUrl: "https://example.com/notes/bio101-cells-genetics.pdf",
         uploaderId: carol.id,

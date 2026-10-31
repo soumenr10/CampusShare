@@ -5,7 +5,7 @@
   "description": "CampusShare — Campus Resource & Peer-to-Peer Marketplace for university students",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "db:generate": "prisma generate",
