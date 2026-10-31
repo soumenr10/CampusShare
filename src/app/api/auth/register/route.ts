@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: parsed.error.errors.map((e) => e.message).join(", "),
+          error: parsed.error.issues.map((i) => i.message).join(", "),
         } satisfies ApiResponse,
         { status: 400 }
       );
@@ -44,11 +44,11 @@ export async function POST(req: NextRequest) {
         email: email.toLowerCase(),
         passwordHash,
         name,
-        collegeName,
-        department,
+        collegeName: collegeName ?? null,
+        department: department ?? null,
         graduationYear,
-        hostel,
-        phone,
+        hostel: hostel ?? null,
+        phone: phone ?? null,
       },
     });
 

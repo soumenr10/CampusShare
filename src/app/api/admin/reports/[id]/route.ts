@@ -5,9 +5,10 @@ import type { ApiResponse } from "@/types";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = await requireAdmin();
     if (authResult instanceof NextResponse) return authResult;
 
@@ -22,7 +23,7 @@ export async function PATCH(
     }
 
     const report = await prisma.report.update({
-      where: { id: params.id },
+      where: { id },
       data: { status },
     });
 

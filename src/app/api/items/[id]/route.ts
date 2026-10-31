@@ -80,7 +80,7 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
       return NextResponse.json(
         {
           success: false,
-          error: parsed.error.errors.map((e) => e.message).join(", "),
+          error: parsed.error.issues.map((i) => i.message).join(", "),
         } satisfies ApiResponse,
         { status: 400 }
       );
