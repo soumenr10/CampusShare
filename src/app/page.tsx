@@ -14,15 +14,15 @@ const categories = [
 ];
 
 const features = [
-  { title: "Verified Students Only", desc: "Every account is verified with an institutional .edu email — no anonymous scammers.", icon: ShieldCheck, color: "text-green-600 bg-green-100" },
-  { title: "Safe Campus Meetups", desc: "Exchange items at pre-designated safe zones like the Library Foyer or Student Union.", icon: MapPin, color: "text-blue-600 bg-blue-100" },
-  { title: "In-App Chat", desc: "Negotiate and arrange exchanges without sharing personal phone numbers.", icon: MessageCircle, color: "text-purple-600 bg-purple-100" },
+  { title: "Student-Only Community", desc: "A safe space for university students to trade and share resources without worrying about outside scammers.", icon: ShieldCheck, color: "text-green-600 bg-green-100" },
+  { title: "Easy Campus Meetups", desc: "Exchange your items at familiar spots like the Library Foyer or Student Union.", icon: MapPin, color: "text-blue-600 bg-blue-100" },
+  { title: "Chat with Peers", desc: "Chat directly with other students to coordinate exchanges without needing to share your phone number.", icon: MessageCircle, color: "text-purple-600 bg-purple-100" },
 ];
 
 const steps = [
-  { step: "01", title: "Sign Up with .edu Email", desc: "Create your account with your university email to verify your student identity." },
-  { step: "02", title: "List or Browse", desc: "Post items for sale, browse listings, or share study notes with your campus community." },
-  { step: "03", title: "Meet & Exchange Safely", desc: "Chat with verified peers, set a safe meetup point, and complete the exchange." },
+  { step: "01", title: "Create Your Account", desc: "Sign up using your university email to join your campus community." },
+  { step: "02", title: "List or Browse", desc: "Post things you no longer need or browse for textbooks, electronics, and study notes." },
+  { step: "03", title: "Meet & Exchange", desc: "Chat with your peers, pick a spot on campus, and complete the trade." },
 ];
 
 export default function HomePage() {
